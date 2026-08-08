@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "com.unity.2d.sprite": "1.0.0",
+    "com.unity.purchasing": "4.12.2",
+    "com.unity.services.analytics": "5.1.1",
+    "com.revenuecat.purchases-unity": "7.4.0"
+  }
+}

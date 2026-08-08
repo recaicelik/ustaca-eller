@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  gates:
+    name: Content and compliance gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Do the gates themselves still work? A validator that silently passes
+      # everything is worse than no validator.
+      - name: Gate tests
+        run: npm test
+
+      - name: Scene manifests
+        run: npm run validate:scenes
+
+      - name: Localization catalogs
+        run: npm run validate:i18n
+
+      - name: Kids Category / COPPA compliance
+        run: npm run compliance

@@ -1,0 +1,15 @@
+{
+  "name": "ustaca-eller",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ustaca Eller — content pipeline and CI gates",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "validate": "npm run validate:scenes && npm run validate:i18n",
+    "validate:scenes": "node tools/validate-scenes.mjs",
+    "validate:i18n": "node tools/validate-i18n.mjs",
+    "compliance": "node tools/check-compliance.mjs",
+    "test": "node tools/test.mjs"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "scene.kitchen.title": "Kitchen",
+
+  "parent.gate.prompt": "Type the current year to continue",
+  "parent.gate.error": "Try again",
+  "parent.zone.title": "Parent Zone",
+  "parent.zone.settings": "Settings",
+  "parent.zone.downloads": "Downloads",
+  "parent.zone.subscription": "Subscription",
+  "parent.zone.privacy": "Privacy",
+
+  "paywall.title": "All of Ustaca Eller",
+  "paywall.body": "No ads, no in-app purchases. Every scene with one subscription.",
+  "paywall.plan.monthly": "Monthly",
+  "paywall.plan.yearly": "Yearly",
+  "paywall.plan.yearlySaving": "Save {percent}%",
+  "paywall.restore": "Restore purchases",
+  "paywall.terms": "Terms of use",
+
+  "subscription.active": "Your subscription is active",
+  "subscription.renews": "Renews on {date}",
+  "subscription.expired": "Your subscription has ended",
+
+  "downloads.available": "Scenes you can download",
+  "downloads.download": "Download",
+  "downloads.downloading": "Downloading · {percent}%",
+  "downloads.remove": "Remove from device",
+  "downloads.sizeOnDisk": "Takes up {size}",
+
+  "settings.language": "Language",
+  "settings.sound": "Sound",
+  "settings.music": "Music",
+  "settings.haptics": "Haptics",
+  "settings.profiles": "Child profiles"
+}

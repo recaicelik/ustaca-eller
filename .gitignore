@@ -1,0 +1,52 @@
+# --- Unity ---
+unity/[Ll]ibrary/
+unity/[Tt]emp/
+unity/[Oo]bj/
+unity/[Bb]uild/
+unity/[Bb]uilds/
+unity/[Ll]ogs/
+unity/[Uu]ser[Ss]ettings/
+unity/[Mm]emoryCaptures/
+unity/[Rr]ecordings/
+unity/Assets/AssetStoreTools*
+unity/Assets/Plugins/Editor/JetBrains*
+unity/.vs/
+unity/.gradle/
+unity/ExportedObj/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.apk
+*.aab
+*.unitypackage
+*.app
+crashlytics-build.properties
+sysinfo.txt
+
+# --- Art: intermediate output stays out; sources live in Git LFS (.gitattributes) ---
+*_export/
+*.tmp.png
+
+# --- Tooling ---
+node_modules/
+.DS_Store
+*.log
+
+# --- Secrets: RevenueCat keys, signing certificates, service accounts ---
+.env
+.env.*
+*.p12
+*.mobileprovision
+*.keystore
+!debug.keystore
+secrets/

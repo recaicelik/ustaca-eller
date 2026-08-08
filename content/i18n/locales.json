@@ -1,0 +1,9 @@
+{
+  "$comment": "Supported locales. Adding a locale here is the ONLY code-side step needed; everything else is content.",
+  "sourceLocale": "tr",
+  "fallbackChain": ["tr"],
+  "locales": [
+    { "code": "tr", "name": "Türkçe", "voiceOver": true, "shipping": true },
+    { "code": "en", "name": "English", "voiceOver": true, "shipping": false }
+  ]
+}

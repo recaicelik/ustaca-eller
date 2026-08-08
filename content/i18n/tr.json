@@ -1,0 +1,35 @@
+{
+  "scene.kitchen.title": "Mutfak",
+
+  "parent.gate.prompt": "Devam etmek için içinde bulunduğumuz yılı yazın",
+  "parent.gate.error": "Tekrar deneyin",
+  "parent.zone.title": "Ebeveyn Bölümü",
+  "parent.zone.settings": "Ayarlar",
+  "parent.zone.downloads": "İndirilenler",
+  "parent.zone.subscription": "Abonelik",
+  "parent.zone.privacy": "Gizlilik",
+
+  "paywall.title": "Ustaca Eller'in tamamı",
+  "paywall.body": "Reklamsız, uygulama içi satın alma yok. Tek abonelikle bütün sahneler.",
+  "paywall.plan.monthly": "Aylık",
+  "paywall.plan.yearly": "Yıllık",
+  "paywall.plan.yearlySaving": "%{percent} tasarruf",
+  "paywall.restore": "Satın alımları geri yükle",
+  "paywall.terms": "Kullanım koşulları",
+
+  "subscription.active": "Aboneliğiniz etkin",
+  "subscription.renews": "{date} tarihinde yenilenecek",
+  "subscription.expired": "Aboneliğiniz sona erdi",
+
+  "downloads.available": "İndirilebilir sahneler",
+  "downloads.download": "İndir",
+  "downloads.downloading": "İndiriliyor · %{percent}",
+  "downloads.remove": "Cihazdan kaldır",
+  "downloads.sizeOnDisk": "{size} yer kaplıyor",
+
+  "settings.language": "Dil",
+  "settings.sound": "Ses",
+  "settings.music": "Müzik",
+  "settings.haptics": "Titreşim",
+  "settings.profiles": "Çocuk profilleri"
+}

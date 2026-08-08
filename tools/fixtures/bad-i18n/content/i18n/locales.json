@@ -1,0 +1,8 @@
+{
+  "sourceLocale": "tr",
+  "fallbackChain": ["tr"],
+  "locales": [
+    { "code": "tr", "name": "Türkçe", "voiceOver": true, "shipping": true },
+    { "code": "en", "name": "English", "voiceOver": true, "shipping": true }
+  ]
+}

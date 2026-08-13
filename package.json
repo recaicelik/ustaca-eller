@@ -10,6 +10,8 @@
     "validate:scenes": "node tools/validate-scenes.mjs",
     "validate:i18n": "node tools/validate-i18n.mjs",
     "compliance": "node tools/check-compliance.mjs",
-    "test": "node tools/test.mjs"
+    "test": "npm run test:gates && npm run test:core",
+    "test:gates": "node tools/test.mjs",
+    "test:core": "dotnet test core/UstacaEller.slnx --nologo -v q"
   }
 }

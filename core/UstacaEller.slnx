@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UstacaEller.Core.Tests/UstacaEller.Core.Tests.csproj" />
+  <Project Path="UstacaEller.Core/UstacaEller.Core.csproj" />
+</Solution>

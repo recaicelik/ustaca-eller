@@ -208,15 +208,23 @@ Bunlar tartışmaya açık değil; her biri ya yasal bir zorunluluk ya da geri d
 
 | Faz | Durum |
 |---|---|
-| Faz 0 | **Engelli** — Unity Hub kurulumu ve referans cihaz alımı gerekli |
-| Faz 1 | İçerik hattı ve CI kapıları tamam; sahne çalıştırıcı Unity'yi bekliyor |
-| Faz 2-5 | Bekliyor |
+| Faz 0 | Araçlar kuruldu; **Unity lisans aktivasyonu ve referans cihaz bekliyor** |
+| Faz 1 | İçerik hattı ve CI kapıları tamam; sahne çalıştırıcının motordan bağımsız yarısı yazıldı |
+| Faz 2 | Dört mekaniğin karar mantığı yazıldı ve test edildi; görsel katman Unity'yi bekliyor |
+| Faz 3-5 | Bekliyor |
 
-**Tamamlanan (Unity gerektirmeyen kısım):** Sahne manifest şeması, sahne doğrulayıcı, yerelleştirme katalogları ve doğrulayıcısı, Kids/COPPA uyumluluk kapısı, bu kapıların 13 testi, CI koşumu ve dört mekaniği birden kullanan örnek Mutfak sahnesi. Hepsi `npm test` ile doğrulanabilir.
+**Kurulanlar:** Node araç zinciri, `git-lfs` (depoda etkin), .NET 10 SDK, Unity Hub, Unity 6 LTS (6000.0.81f1, iOS + Android modülleriyle).
+
+**Tamamlananlar:**
+
+- Sahne manifest şeması, sahne doğrulayıcı, yerelleştirme katalogları ve doğrulayıcısı, Kids/COPPA uyumluluk kapısı ve bu kapıların testleri
+- Dört mekaniği birden kullanan örnek Mutfak sahnesi
+- **Oyun çekirdeği** (`core/UstacaEller.Core`) — motordan bağımsız saf C#: kesme geometrisi, yapışma çözümü, ızgara yerleştirme, yerelleştirme çözümü. 36 birim testi.
+- Toplam 49 otomatik test, tek komutta: `npm test`
 
 **Sıradaki engel — insan kararı gerekiyor:**
 
-1. **Unity Hub + Unity 6 LTS kurulumu** (bkz. [unity/README.md](../unity/README.md)). Bu olmadan sahne çalıştırıcı, mekanikler ve kabuk yazılamaz.
-2. **Referans cihaz alımı** — giriş segmenti Android. Performans kabul kriterinin ölçüldüğü yer burası; olmadan Faz 0 kapanamaz.
-3. **Lisans kararı** — Personal (200.000 $ altı) mı, Pro mu.
-4. **IP kararı** — rakip analizinin önerdiği üç yoldan hangisi: TRT ile lisans görüşmesi, bağımsız bir yerli karakter lisansı, ya da sıfırdan özgün karakter evreni. Karakter tasarımı Faz 4'ün girdisi olduğu için bu kararın Faz 2 bitmeden verilmesi gerekiyor.
+1. **Unity lisans aktivasyonu.** Editor kuruldu ama açılması için Unity hesabıyla giriş gerekiyor; kimlik bilgisi gerektirdiği için bu adım sende. Personal lisans, yıllık gelir + yatırım 200.000 $ altındayken yeterli.
+2. **Referans cihaz alımı** — giriş segmenti Android. Performans kabul kriterinin ölçüldüğü tek yer; olmadan Faz 0 kapanamaz.
+3. **IP kararı** — rakip analizinin önerdiği üç yoldan hangisi: TRT ile lisans görüşmesi, bağımsız bir yerli karakter lisansı, ya da sıfırdan özgün karakter evreni. Karakter tasarımı Faz 4'ün girdisi olduğu için bu kararın Faz 2 bitmeden verilmesi gerekiyor.
+4. **İllüstratör/animatör işe alımı.** Bu kategoride ürünü kazandıran şey üretim kalitesi; kod bu darboğazı açamaz.

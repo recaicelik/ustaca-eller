@@ -1,0 +1,8 @@
+{
+  "name": "com.ustacaeller.core",
+  "version": "0.1.0",
+  "displayName": "Ustaca Eller Core",
+  "description": "Engine-independent game logic: cutting geometry, snapping, grid placement and localization. Contains no UnityEngine references so it can be unit tested without the editor.",
+  "unity": "6000.0",
+  "author": { "name": "Ustaca Eller" }
+}

@@ -18,6 +18,7 @@ is the only revenue source.
 content/i18n/     Localization catalogs — one file per locale
 content/scenes/   Scene manifests; scenes are data, not code
 content/schema/   Scene manifest schema
+core/             Game logic as a plain C# library, no engine dependency
 docs/             Market research, competitor analysis, tech choice, MVP roadmap
 tools/            CI gates: scene validator, i18n validator, compliance check
 unity/            Unity project (not created yet — see unity/README.md)
@@ -25,7 +26,7 @@ unity/            Unity project (not created yet — see unity/README.md)
 
 ## Commands
 
-No dependencies; Node 18+ is all you need.
+Node 18+ for the content pipeline, .NET 10 SDK for the game core.
 
 ```bash
 npm run validate
@@ -39,8 +40,36 @@ npm run compliance
 npm test
 ```
 
-`validate` covers scene manifests and localization catalogs. `test` verifies the
-gates themselves still catch what they claim to.
+`validate` covers scene manifests and localization catalogs. `test` runs both the
+gate tests and the game core tests (`npm run test:gates` / `npm run test:core` to
+run one side alone).
+
+---
+
+## Game core
+
+`core/UstacaEller.Core` holds the parts of the game that are logic rather than
+rendering: cutting geometry, snapping, grid placement and localization lookup.
+It has **no UnityEngine references** and targets `netstandard2.1`.
+
+That constraint buys three things:
+
+1. **The hard part is testable in milliseconds.** Cutting a shape along a
+   finger-drawn stroke is the riskiest mechanic in the product; verifying it needs
+   arithmetic, not a GPU. `dotnet test` runs the whole suite in well under a second,
+   on any machine, with no editor and no device.
+2. **CI stays cheap.** Unity CI is slow and licensed; this is neither.
+3. **The engine decision stays reversible.** Should Unity ever be swapped out — the
+   technology report keeps Godot as a live second option — this assembly survives
+   untouched.
+
+Unity consumes the same files as a local package through
+`Runtime/UstacaEller.Core.asmdef`; the `.csproj` exists so the sources also compile
+without Unity. One set of sources, two build paths, no copies.
+
+**Where the line sits:** anything that needs a transform, a sprite, a touch event or
+a sound goes in the Unity layer. Anything that can be decided from numbers and ids
+goes here.
 
 ---
 

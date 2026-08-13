@@ -13,9 +13,11 @@ unity/Assets/Plugins/Editor/JetBrains*
 unity/.vs/
 unity/.gradle/
 unity/ExportedObj/
-*.csproj
-*.unityproj
-*.sln
+# Unity regenerates these from the .asmdef files. Scoped to unity/ on purpose —
+# core/ has hand-written project files that must stay tracked.
+unity/*.csproj
+unity/*.unityproj
+unity/*.sln
 *.suo
 *.user
 *.userprefs
@@ -36,6 +38,10 @@ sysinfo.txt
 # --- Art: intermediate output stays out; sources live in Git LFS (.gitattributes) ---
 *_export/
 *.tmp.png
+
+# --- .NET (core/) ---
+[Bb]in/
+[Oo]bj/
 
 # --- Tooling ---
 node_modules/

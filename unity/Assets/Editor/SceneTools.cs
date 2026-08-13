@@ -43,7 +43,7 @@ namespace UstacaEller.Editor
             Debug.Log($"[Ustaca Eller] Created {ScenePath} and set it as the only build scene.");
         }
 
-        [MenuItem("Ustaca Eller/Render greybox screenshot")]
+        [MenuItem("Ustaca Eller/Render screenshots")]
         public static void RenderScreenshot()
         {
             RenderScreenshot("kitchen", 1920, 1080);
@@ -57,6 +57,16 @@ namespace UstacaEller.Editor
         {
             ContentSync.Sync();
 
+            // Two images, because they answer different questions. Without the zone
+            // overlays you can judge whether the scene looks right; with them you can
+            // judge whether it plays right. One picture cannot do both — the overlays
+            // tint everything underneath them.
+            Capture(sceneId, width, height, showZones: false, suffix: string.Empty);
+            Capture(sceneId, width, height, showZones: true, suffix: "-zones");
+        }
+
+        private static void Capture(string sceneId, int width, int height, bool showZones, string suffix)
+        {
             var cameraObject = new GameObject("Screenshot Camera");
             var bootstrapObject = new GameObject("Screenshot Bootstrap");
             RenderTexture target = null;
@@ -67,7 +77,7 @@ namespace UstacaEller.Editor
                 Camera camera = cameraObject.AddComponent<Camera>();
                 var bootstrap = bootstrapObject.AddComponent<SceneBootstrap>();
 
-                built = new SceneBuilder { ShowZones = true }.Build(new SceneCatalog().Load(sceneId));
+                built = new SceneBuilder { ShowZones = showZones }.Build(new SceneCatalog().Load(sceneId));
                 bootstrap.FrameCamera(camera, built);
 
                 target = new RenderTexture(width, height, 24) { antiAliasing = 2 };
@@ -81,7 +91,7 @@ namespace UstacaEller.Editor
                 image.Apply();
                 RenderTexture.active = previous;
 
-                string path = OutputPath(sceneId);
+                string path = OutputPath(sceneId + suffix);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllBytes(path, image.EncodeToPNG());
                 Object.DestroyImmediate(image);
@@ -111,7 +121,7 @@ namespace UstacaEller.Editor
             RenderScreenshot(sceneId, 1920, 1080);
         }
 
-        private static string OutputPath(string sceneId) =>
-            Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "screenshots", $"{sceneId}-greybox.png"));
+        private static string OutputPath(string name) =>
+            Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "screenshots", $"{name}.png"));
     }
 }

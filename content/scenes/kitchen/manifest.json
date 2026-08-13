@@ -19,6 +19,7 @@
         "id": "atlas_kitchen",
         "file": "atlas_kitchen.png",
         "sprites": [
+          "backdrop",
           "counter",
           "oven",
           "shelf",
@@ -109,8 +110,13 @@
   },
   "layers": [
     {
-      "id": "background",
+      "id": "backdrop",
       "order": 0,
+      "parallax": 0
+    },
+    {
+      "id": "background",
+      "order": 5,
       "parallax": 0
     },
     {
@@ -134,10 +140,10 @@
       "id": "counter_area",
       "type": "snap",
       "shape": {
-        "x": 340,
-        "y": 620,
-        "width": 620,
-        "height": 220
+        "x": 320,
+        "y": 570,
+        "width": 340,
+        "height": 106
       },
       "accepts": [
         "dough_*"
@@ -148,10 +154,10 @@
       "id": "tray_area",
       "type": "snap",
       "shape": {
-        "x": 1100,
-        "y": 640,
-        "width": 420,
-        "height": 200
+        "x": 1240,
+        "y": 616,
+        "width": 300,
+        "height": 70
       },
       "accepts": [
         "cookie_*"
@@ -162,9 +168,9 @@
       "id": "shelf_grid",
       "type": "grid",
       "shape": {
-        "x": 1180,
+        "x": 1200,
         "y": 150,
-        "width": 560,
+        "width": 600,
         "height": 260
       },
       "accepts": [
@@ -180,24 +186,37 @@
       "id": "cake_area",
       "type": "paintArea",
       "shape": {
-        "x": 640,
-        "y": 300,
-        "width": 340,
-        "height": 300
+        "x": 650,
+        "y": 476,
+        "width": 220,
+        "height": 200
       }
     }
   ],
   "objects": [
     {
+      "id": "backdrop",
+      "layer": "backdrop",
+      "sprite": "atlas_kitchen:backdrop",
+      "transform": {
+        "x": 960,
+        "y": 540
+      },
+      "placeholderSize": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
       "id": "counter",
       "layer": "furniture",
       "sprite": "atlas_kitchen:counter",
       "transform": {
-        "x": 640,
-        "y": 760
+        "x": 900,
+        "y": 771
       },
       "placeholderSize": {
-        "width": 640,
+        "width": 1300,
         "height": 190
       }
     },
@@ -206,8 +225,8 @@
       "layer": "furniture",
       "sprite": "atlas_kitchen:oven",
       "transform": {
-        "x": 240,
-        "y": 700
+        "x": 140,
+        "y": 716
       },
       "placeholderSize": {
         "width": 220,
@@ -219,7 +238,7 @@
       "layer": "furniture",
       "sprite": "atlas_kitchen:shelf",
       "transform": {
-        "x": 1460,
+        "x": 1500,
         "y": 300
       },
       "placeholderSize": {
@@ -232,7 +251,7 @@
       "layer": "furniture",
       "sprite": "atlas_kitchen:shelf",
       "transform": {
-        "x": 1460,
+        "x": 1500,
         "y": 430
       },
       "placeholderSize": {
@@ -245,7 +264,7 @@
       "layer": "background",
       "sprite": "atlas_kitchen:window",
       "transform": {
-        "x": 980,
+        "x": 1000,
         "y": 220
       },
       "placeholderSize": {
@@ -258,12 +277,12 @@
       "layer": "furniture",
       "sprite": "atlas_kitchen:tray",
       "transform": {
-        "x": 1310,
-        "y": 740
+        "x": 1390,
+        "y": 656
       },
       "placeholderSize": {
-        "width": 430,
-        "height": 45
+        "width": 300,
+        "height": 40
       }
     },
     {
@@ -271,8 +290,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:dough_a",
       "transform": {
-        "x": 520,
-        "y": 660
+        "x": 400,
+        "y": 621
       },
       "placeholderSize": {
         "width": 150,
@@ -301,8 +320,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:dough_b",
       "transform": {
-        "x": 760,
-        "y": 660
+        "x": 570,
+        "y": 621
       },
       "placeholderSize": {
         "width": 150,
@@ -331,8 +350,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:cookie_star",
       "transform": {
-        "x": 1020,
-        "y": 860
+        "x": 960,
+        "y": 628
       },
       "placeholderSize": {
         "width": 95,
@@ -355,8 +374,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:cookie_heart",
       "transform": {
-        "x": 1120,
-        "y": 880
+        "x": 1065,
+        "y": 628
       },
       "placeholderSize": {
         "width": 95,
@@ -379,8 +398,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:cookie_moon",
       "transform": {
-        "x": 1220,
-        "y": 900
+        "x": 1170,
+        "y": 628
       },
       "placeholderSize": {
         "width": 95,
@@ -403,8 +422,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:cake_plain",
       "transform": {
-        "x": 810,
-        "y": 450
+        "x": 760,
+        "y": 576
       },
       "placeholderSize": {
         "width": 220,
@@ -425,8 +444,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:jar_flour",
       "transform": {
-        "x": 380,
-        "y": 420
+        "x": 450,
+        "y": 960
       },
       "placeholderSize": {
         "width": 85,
@@ -446,8 +465,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:jar_sugar",
       "transform": {
-        "x": 470,
-        "y": 420
+        "x": 560,
+        "y": 960
       },
       "placeholderSize": {
         "width": 85,
@@ -467,8 +486,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:jar_salt",
       "transform": {
-        "x": 560,
-        "y": 420
+        "x": 670,
+        "y": 960
       },
       "placeholderSize": {
         "width": 85,
@@ -488,8 +507,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:jar_cocoa",
       "transform": {
-        "x": 650,
-        "y": 420
+        "x": 780,
+        "y": 960
       },
       "placeholderSize": {
         "width": 85,
@@ -512,9 +531,9 @@
       "artboard": "Maker",
       "stateMachine": "Reactions",
       "transform": {
-        "x": 200,
-        "y": 940,
-        "scale": 1
+        "x": 1720,
+        "y": 900,
+        "scale": 1.6
       },
       "reactions": [
         {

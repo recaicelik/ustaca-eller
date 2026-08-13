@@ -18,25 +18,25 @@ namespace UstacaEller.SceneRuntime
         public Dictionary<string, GameObject> Zones { get; } = new Dictionary<string, GameObject>();
 
         public Dictionary<string, GameObject> Characters { get; } = new Dictionary<string, GameObject>();
+
+        /// <summary>Objects still waiting on artwork. Empty means the scene is fully drawn.</summary>
+        public List<string> UndrawnObjects { get; } = new List<string>();
     }
 
     /// <summary>
     /// Turns a manifest into a live scene.
     ///
-    /// Art does not exist yet, so every object is a flat coloured quad sized from a
-    /// placeholder. That is the point of a greybox: the layout, the layer order, the
-    /// drop zones and all four mechanics can be exercised and measured now, and the
-    /// illustrator's work drops into the same slots later without the runtime changing.
-    ///
-    /// Placeholder colours are derived from the object id, so the same prop is the same
-    /// colour every run and screenshots are comparable between builds.
+    /// Every object is placed and sized from the manifest, then given its artwork if
+    /// that artwork exists. Anything not yet drawn appears as a flat coloured quad, so
+    /// a scene is playable and measurable before illustration finishes and each new
+    /// sprite drops in without a code change.
     /// </summary>
     public sealed class SceneBuilder
     {
         /// <summary>Fallback edge length in canvas pixels when a manifest states no placeholder size.</summary>
         public const float DefaultPlaceholderSize = 120f;
 
-        private static Sprite _placeholderSprite;
+        private readonly SpriteLibrary _sprites = new SpriteLibrary();
 
         /// <summary>
         /// Draws drop zones as translucent overlays. Off in a real build — this is for
@@ -89,29 +89,30 @@ namespace UstacaEller.SceneRuntime
             return built;
         }
 
-        private static GameObject BuildObject(SceneObject sceneObject, int sortingOrder, BuiltScene built)
+        private GameObject BuildObject(SceneObject sceneObject, int sortingOrder, BuiltScene built)
         {
             var go = new GameObject(sceneObject.Id);
             go.transform.SetParent(built.Root.transform, worldPositionStays: false);
             go.transform.localPosition = built.Mapper.ToWorld(sceneObject.Transform);
             go.transform.localRotation = Quaternion.Euler(0f, 0f, -sceneObject.Transform.Rotation);
 
+            SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
+            renderer.sortingOrder = sortingOrder;
+
+            Sprite drawn = _sprites.Find(built.Manifest.Id, sceneObject.SpriteName);
+            if (drawn == null) built.UndrawnObjects.Add(sceneObject.Id);
+
+            renderer.sprite = drawn != null ? drawn : SpriteLibrary.Placeholder();
+            renderer.color = drawn != null ? Color.white : ColourFor(sceneObject.Id);
+
             float width = sceneObject.PlaceholderSize?.Width ?? DefaultPlaceholderSize;
             float height = sceneObject.PlaceholderSize?.Height ?? DefaultPlaceholderSize;
-            go.transform.localScale = new Vector3(
-                built.Mapper.ToWorldLength(width) * sceneObject.Transform.Scale,
-                built.Mapper.ToWorldLength(height) * sceneObject.Transform.Scale,
-                1f);
-
-            SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
-            renderer.sprite = PlaceholderSprite();
-            renderer.color = ColourFor(sceneObject.Id);
-            renderer.sortingOrder = sortingOrder;
+            Fit(go.transform, renderer.sprite, built.Mapper, width, height, sceneObject.Transform.Scale);
 
             return go;
         }
 
-        private static GameObject BuildZone(SceneZone zone, BuiltScene built, bool visible)
+        private GameObject BuildZone(SceneZone zone, BuiltScene built, bool visible)
         {
             var go = new GameObject($"zone:{zone.Id}");
             go.transform.SetParent(built.Root.transform, worldPositionStays: false);
@@ -130,11 +131,47 @@ namespace UstacaEller.SceneRuntime
             if (!visible) return go;
 
             SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
-            renderer.sprite = PlaceholderSprite();
+            renderer.sprite = SpriteLibrary.Placeholder();
             renderer.color = ZoneColour(zone.Type);
             renderer.sortingOrder = 90;
 
             return go;
+        }
+
+        private GameObject BuildCharacter(SceneCharacter character, BuiltScene built)
+        {
+            var go = new GameObject($"character:{character.Id}");
+            go.transform.SetParent(built.Root.transform, worldPositionStays: false);
+            go.transform.localPosition = built.Mapper.ToWorld(character.Transform.X, character.Transform.Y);
+
+            SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
+            renderer.sortingOrder = 100;
+
+            // Rive and Spine arrive later; this is the still pose that holds the anchor.
+            Sprite drawn = _sprites.Find(built.Manifest.Id, character.Id);
+            renderer.sprite = drawn != null ? drawn : SpriteLibrary.Placeholder();
+            renderer.color = drawn != null ? Color.white : new Color(1f, 1f, 1f, 0.6f);
+
+            float size = DefaultPlaceholderSize * 1.5f;
+            Fit(go.transform, renderer.sprite, built.Mapper, size, size, character.Transform.Scale);
+
+            return go;
+        }
+
+        /// <summary>
+        /// Scales a transform so the sprite covers exactly the requested canvas size,
+        /// whatever pixels-per-unit that sprite was imported at. Without this, swapping a
+        /// placeholder for real art changes the object's size on screen.
+        /// </summary>
+        private static void Fit(Transform transform, Sprite sprite, CanvasMapper mapper, float width, float height, float scale)
+        {
+            Vector2 native = sprite.bounds.size;
+            if (native.x <= 0f || native.y <= 0f) return;
+
+            transform.localScale = new Vector3(
+                mapper.ToWorldLength(width) * scale / native.x,
+                mapper.ToWorldLength(height) * scale / native.y,
+                1f);
         }
 
         /// <summary>One colour per zone kind, so a blockout screenshot reads at a glance.</summary>
@@ -146,39 +183,7 @@ namespace UstacaEller.SceneRuntime
             _ => new Color(0.5f, 0.5f, 0.5f, 0.22f),
         };
 
-        private static GameObject BuildCharacter(SceneCharacter character, BuiltScene built)
-        {
-            var go = new GameObject($"character:{character.Id}");
-            go.transform.SetParent(built.Root.transform, worldPositionStays: false);
-            go.transform.localPosition = built.Mapper.ToWorld(character.Transform.X, character.Transform.Y);
-
-            // Rive and Spine both arrive later; the placeholder marks the anchor so the
-            // scene reads correctly in the meantime.
-            float size = built.Mapper.ToWorldLength(DefaultPlaceholderSize * 1.5f) * character.Transform.Scale;
-            go.transform.localScale = new Vector3(size, size, 1f);
-
-            SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
-            renderer.sprite = PlaceholderSprite();
-            renderer.color = new Color(1f, 1f, 1f, 0.6f);
-            renderer.sortingOrder = 100;
-
-            return go;
-        }
-
-        private static Sprite PlaceholderSprite()
-        {
-            if (_placeholderSprite != null) return _placeholderSprite;
-
-            var texture = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
-            texture.SetPixel(0, 0, Color.white);
-            texture.Apply();
-
-            _placeholderSprite = Sprite.Create(texture, new UnityEngine.Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f), 1f);
-            _placeholderSprite.hideFlags = HideFlags.HideAndDontSave;
-            return _placeholderSprite;
-        }
-
-        /// <summary>Stable per id, so a prop keeps its colour across runs and screenshots.</summary>
+        /// <summary>Stable per id, so an undrawn prop keeps its colour across runs.</summary>
         private static Color ColourFor(string id)
         {
             int hash = 17;

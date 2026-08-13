@@ -102,8 +102,17 @@ namespace UstacaEller.Core.Tests
 
             Assert.Equal("kitchen", scene.Id);
             Assert.Equal("0.1.0", scene.Version);
-            Assert.Equal(4, scene.Layers.Count);
             Assert.Single(scene.Characters);
+
+            // Layer order decides what hides what, so the orders must be distinct —
+            // equal orders leave the draw order up to the engine.
+            List<int> orders = scene.Layers.Select(layer => layer.Order).ToList();
+            Assert.Equal(orders.Count, orders.Distinct().Count());
+            Assert.Equal(orders.OrderBy(order => order), orders);
+
+            // Every object points at a layer that exists.
+            var layerIds = scene.Layers.Select(layer => layer.Id).ToHashSet();
+            Assert.All(scene.Objects, sceneObject => Assert.Contains(sceneObject.Layer, layerIds));
 
             // Object ids must be unique — the runtime and the save file both key on them.
             Assert.Equal(scene.Objects.Count, scene.Objects.Select(o => o.Id).Distinct().Count());

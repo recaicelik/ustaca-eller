@@ -118,6 +118,37 @@ namespace UstacaEller.Tests.EditMode
         }
 
         [Test]
+        public void NarrowScreensLetterboxInsteadOfCroppingTheSides()
+        {
+            var mapper = new CanvasMapper(_catalog.Load("kitchen").Canvas);
+
+            // 16:9 is the design aspect, so it needs no adjustment.
+            Assert.AreEqual(mapper.OrthographicSize, mapper.OrthographicSizeFor(16f / 9f), 0.0001f);
+
+            // 4:3 is narrower: the view has to grow or the shelf runs off the right edge,
+            // and a prop a child cannot reach is worse than one that looks small.
+            Assert.Greater(mapper.OrthographicSizeFor(4f / 3f), mapper.OrthographicSize);
+
+            // Wider than the design keeps the height fit; the extra width is just margin.
+            Assert.AreEqual(mapper.OrthographicSize, mapper.OrthographicSizeFor(21f / 9f), 0.0001f);
+        }
+
+        [Test]
+        public void TheWholeCanvasFitsOnACommonTabletAspect()
+        {
+            var mapper = new CanvasMapper(_catalog.Load("kitchen").Canvas);
+            float aspect = 4f / 3f;
+
+            float halfHeight = mapper.OrthographicSizeFor(aspect);
+            float halfWidth = halfHeight * aspect;
+
+            // The furthest corner of the design area must sit inside the view.
+            Vector3 corner = mapper.ToWorld(1920f, 1080f);
+            Assert.LessOrEqual(Mathf.Abs(corner.x), halfWidth + 0.0001f);
+            Assert.LessOrEqual(Mathf.Abs(corner.y), halfHeight + 0.0001f);
+        }
+
+        [Test]
         public void MappingRoundTrips()
         {
             var mapper = new CanvasMapper(_catalog.Load("kitchen").Canvas);

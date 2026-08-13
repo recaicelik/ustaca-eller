@@ -47,6 +47,17 @@ namespace UstacaEller.SceneRuntime
 
         public BuiltScene Build(SceneManifest manifest, Transform parent = null)
         {
+            // A manifest that parsed but came back empty means managed stripping removed
+            // the property setters Newtonsoft needs. Saying so beats a NullReferenceException
+            // three frames deeper, because the cause is nowhere near the symptom.
+            if (manifest?.Canvas == null)
+            {
+                throw new System.InvalidOperationException(
+                    "Scene manifest has no canvas. If this is a player build, check that Assets/link.xml " +
+                    "still preserves UstacaEller.Core.Manifest — managed stripping removes the property " +
+                    "setters Newtonsoft populates by reflection.");
+            }
+
             var built = new BuiltScene
             {
                 Manifest = manifest,

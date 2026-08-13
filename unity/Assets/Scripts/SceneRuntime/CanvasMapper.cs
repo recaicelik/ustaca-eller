@@ -28,8 +28,27 @@ namespace UstacaEller.SceneRuntime
 
         public float PixelsPerUnit { get; }
 
+        public float DesignAspect => _width / _height;
+
         /// <summary>Orthographic size that fits the canvas height exactly.</summary>
         public float OrthographicSize => _height / (2f * PixelsPerUnit);
+
+        /// <summary>
+        /// Orthographic size that keeps the whole canvas on screen at the given aspect,
+        /// letterboxing rather than cropping.
+        ///
+        /// Fitting height alone crops the sides on any device narrower than the design
+        /// resolution, and a prop that is off-screen is one a child cannot reach — worse
+        /// than one that looks slightly small.
+        /// </summary>
+        public float OrthographicSizeFor(float screenAspect)
+        {
+            if (screenAspect <= 0f) return OrthographicSize;
+
+            return screenAspect < DesignAspect
+                ? OrthographicSize * (DesignAspect / screenAspect)
+                : OrthographicSize;
+        }
 
         public Vector3 ToWorld(float canvasX, float canvasY, float z = 0f) => new Vector3(
             (canvasX - _width * 0.5f) / PixelsPerUnit,

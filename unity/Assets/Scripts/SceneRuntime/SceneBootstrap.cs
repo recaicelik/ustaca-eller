@@ -47,7 +47,7 @@ namespace UstacaEller.SceneRuntime
             if (camera == null) return;
 
             camera.orthographic = true;
-            camera.orthographicSize = scene.Mapper.OrthographicSize;
+            camera.orthographicSize = scene.Mapper.OrthographicSizeFor(camera.aspect);
             camera.transform.position = new Vector3(0f, 0f, -10f);
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = backgroundColour;

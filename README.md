@@ -52,6 +52,14 @@ Runs the Unity EditMode tests headlessly. Kept out of `npm test` because it need
 licensed Unity install and takes minutes — run it before pushing anything under
 `unity/`.
 
+```bash
+npm run run:ios
+```
+
+Builds and launches on a booted iOS simulator. Boot one first, e.g.
+`xcrun simctl boot "iPad Pro 11-inch (M5)"`. Needs the iOS platform installed
+(`xcodebuild -downloadPlatform iOS`).
+
 ---
 
 ## Game core

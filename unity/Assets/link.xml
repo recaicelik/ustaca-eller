@@ -1,0 +1,22 @@
+<!--
+  Types populated by reflection must survive managed code stripping.
+
+  Newtonsoft sets these properties by reflection, so nothing calls the setters
+  statically and IL2CPP with stripping set to High removes them. The build then
+  succeeds, the JSON parses, and every property comes back null — a
+  NullReferenceException deep in the scene builder with no hint of the cause.
+  It cannot reproduce in the editor, where nothing is stripped.
+
+  Preserving these instead of lowering the stripping level keeps the build-size
+  decision intact everywhere else.
+-->
+<linker>
+  <assembly fullname="UstacaEller.Core">
+    <namespace fullname="UstacaEller.Core.Manifest" preserve="all" />
+  </assembly>
+
+  <assembly fullname="UstacaEller.SceneRuntime">
+    <type fullname="UstacaEller.SceneRuntime.LocaleSettings" preserve="all" />
+    <type fullname="UstacaEller.SceneRuntime.LocaleEntry" preserve="all" />
+  </assembly>
+</linker>

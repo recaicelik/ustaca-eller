@@ -82,6 +82,25 @@ namespace UstacaEller.Core.Geometry
             float epsilon = DefaultEpsilon)
         {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
+
+            return CutAgainst(polygon, stroke, minPieceAreaRatio, polygon.Area, epsilon);
+        }
+
+        /// <summary>
+        /// Same cut, but the minimum piece size is measured against
+        /// <paramref name="referenceArea"/> rather than the polygon being cut.
+        /// <see cref="CuttableShape"/> passes the original shape's area so that the
+        /// tenth cut cannot produce something ten times smaller than the first was
+        /// allowed to.
+        /// </summary>
+        public static CutResult CutAgainst(
+            Polygon polygon,
+            IReadOnlyList<Vec2> stroke,
+            float minPieceAreaRatio,
+            float referenceArea,
+            float epsilon = DefaultEpsilon)
+        {
+            if (polygon == null) throw new ArgumentNullException(nameof(polygon));
             if (stroke == null) throw new ArgumentNullException(nameof(stroke));
             if (stroke.Count < 2) return CutResult.Failure(CutOutcome.NoCrossing);
 
@@ -97,9 +116,8 @@ namespace UstacaEller.Core.Geometry
             Polygon pieceB = BuildPiece(polygon, exit, entry, insideStroke, reverseStroke: true, epsilon);
             if (pieceA == null || pieceB == null) return CutResult.Failure(CutOutcome.NoCrossing);
 
-            float originalArea = polygon.Area;
             float smallest = Math.Min(pieceA.Area, pieceB.Area);
-            if (originalArea <= 0f || smallest / originalArea < minPieceAreaRatio)
+            if (referenceArea <= 0f || smallest / referenceArea < minPieceAreaRatio)
             {
                 return CutResult.Failure(CutOutcome.PieceTooSmall);
             }

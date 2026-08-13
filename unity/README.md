@@ -1,38 +1,73 @@
-# Unity project — not created yet
+# Unity project
 
-This directory will hold the Unity 6 project. It could not be created on this
-machine because **Unity Hub is not installed.** That is the first task of Phase 0.
+Unity Hub and **Unity 6 LTS 6000.0.81f1** (iOS + Android modules) are installed.
+The project skeleton here — package manifest, assembly definitions, editor
+bootstrap — is authored by hand and pinned to that editor version.
 
-## Setup
+> **One step is blocked and it needs you.** The editor refuses to open without a
+> licence, and activating one means signing in with a Unity account:
+>
+> ```
+> [Licensing::Client] Error: Code 404 (Found 0 entitlement groups and 0 free entitlements)
+> ```
+>
+> Open Unity Hub, sign in, and activate a **Personal** licence — enough while annual
+> revenue plus funding stays under $200,000. Everything below happens on first open.
 
-1. Install **Unity Hub**: https://unity.com/download
-2. Install **Unity 6 LTS** through Hub, with these modules:
-   - iOS Build Support
-   - Android Build Support (+ OpenJDK, Android SDK & NDK Tools)
-3. Licensing: **Personal** is enough while annual revenue plus funding stays under
-   $200,000.
-4. Create a new project here from the **2D (URP)** template, named `UstacaEller`.
+## First open
 
-## Day-one settings
+1. Unity Hub → **Add project from disk** → select this `unity/` directory.
+2. Unity resolves packages and generates `ProjectSettings/`, `Library/` and the
+   `.meta` files. Expect a few minutes.
+3. Run **Ustaca Eller → Apply project settings** from the menu bar.
 
-These are cheap now and expensive later.
+That menu item comes from [Assets/Editor/ProjectBootstrap.cs](Assets/Editor/ProjectBootstrap.cs)
+and applies every setting in the table below in one go, then audits the result. It
+also re-audits on every editor load, so a setting someone flips back gets reported
+immediately rather than at the next pull request.
+
+> **Not yet compiled.** `ProjectBootstrap.cs` was written without a working editor,
+> so its API calls are unverified. Treat the first open as its first test.
+
+## Settings the bootstrap applies
 
 | Setting | Value | Why |
 |---|---|---|
-| Player → Splash Image → Show Unity Logo | **off** | Unity 6 allows this even on the free tier; matters for a premium kids brand |
-| Player → Other → Managed Stripping Level | **High** | Build size |
-| Player → Other → Strip Engine Code | **on** | Build size |
-| Player → Other → Api Compatibility Level | **.NET Standard 2.1** | Build size |
-| Project Settings → `submitAnalytics` | **0** | Kids Category — no hardware stats submission |
-| Package Manager | never install `com.unity.services.*`, `com.unity.purchasing`, `com.unity.ads` | Documented Apple Kids Category rejection causes |
-| Payments | **RevenueCat Unity SDK** (current version) | Unity IAP cannot be enabled without Analytics |
-| Localization | Runtime reads `content/i18n`; **no literal user-facing strings in C#** | A new language must cost content work only |
+| Splash screen and Unity logo | **off** | Unity 6 allows this on Personal; the Unity logo is the wrong first frame for a premium kids brand |
+| Managed stripping level | **High** | Build size |
+| Strip engine code | **on** | Build size |
+| Api compatibility | **.NET Standard** | Build size |
+| Scripting backend | **IL2CPP** | Required for iOS, and faster on the reference device |
+| Android architecture | **ARM64** | Play Store requirement |
+| Android min SDK | **24** | Covers the entry-level device base |
+| Orientation | **Landscape** | A digital toy is held in two hands |
+| `submitAnalytics` | **0** | Kids Category — no hardware statistics submission |
 
-Run the compliance gate once the project exists — it verifies most of the above:
+## Rules the bootstrap enforces
+
+| Rule | Why |
+|---|---|
+| Never install `com.unity.services.*`, `com.unity.purchasing`, `com.unity.ads` | Documented Apple Kids Category rejection causes |
+| Payments through the **RevenueCat Unity SDK** (current version) | Unity IAP cannot be enabled without Analytics |
+| No literal user-facing strings in C# — the runtime reads `content/i18n` | A new language must cost content work only |
+
+The same rules run in CI:
 
 ```bash
 npm run compliance
 ```
+
+## Packages
+
+[Packages/manifest.json](Packages/manifest.json) is curated rather than generated.
+Versions come from the 2D cross-platform template shipped inside this editor build,
+so they are known-good for 6000.0.81f1.
+
+`com.ustacaeller.core` is a local package pointing at [../core/UstacaEller.Core](../core/UstacaEller.Core) —
+the same sources the .NET test suite compiles. One set of sources, two build paths.
+
+Unity's own Localization package is deliberately absent: localization is content, and
+it lives in `content/i18n` with the lookup logic in the core assembly.
 
 ## Phase 0 exit criteria
 

@@ -4,6 +4,10 @@
   "id": "kitchen",
   "version": "0.1.0",
   "titleKey": "scene.kitchen.missing_title",
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
   "budget": {
     "maxActiveSprites": 10,
     "maxSkeletons": 3,
@@ -377,8 +381,8 @@
       "layer": "props",
       "sprite": "atlas_kitchen:jar_sugar",
       "transform": {
-        "x": 470,
-        "y": 420
+        "x": 5000,
+        "y": -40
       },
       "labelVoice": "vo_jar",
       "mechanics": [

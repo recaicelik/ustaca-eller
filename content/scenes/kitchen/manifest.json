@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "titleKey": "scene.kitchen.title",
 
+  "canvas": { "width": 1920, "height": 1080 },
+
   "budget": {
     "maxActiveSprites": 120,
     "maxSkeletons": 3,

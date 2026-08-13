@@ -23,6 +23,8 @@ namespace UstacaEller.Core.Manifest
         /// <summary>Localization key. Never literal text — see content/i18n.</summary>
         public string TitleKey { get; set; }
 
+        public SceneCanvas Canvas { get; set; }
+
         public SceneBudget Budget { get; set; }
 
         public SceneAssets Assets { get; set; }
@@ -36,6 +38,19 @@ namespace UstacaEller.Core.Manifest
         public List<SceneCharacter> Characters { get; set; } = new List<SceneCharacter>();
 
         public SceneAudio Audio { get; set; }
+    }
+
+    /// <summary>
+    /// The design resolution every coordinate in a manifest is expressed in. Origin is
+    /// top-left with y growing downward, matching the art tools scenes are drawn in.
+    /// Converting to world space is the renderer's job; scene authors never see world
+    /// units.
+    /// </summary>
+    public sealed class SceneCanvas
+    {
+        public float Width { get; set; }
+
+        public float Height { get; set; }
     }
 
     public sealed class SceneBudget

@@ -5,7 +5,7 @@
   "description": "Describes a whole scene as data. Adding a scene must never require writing C#. All human-readable text is referenced by key (see content/i18n) so a new language costs zero manifest edits.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "id", "version", "titleKey", "budget", "assets", "layers", "objects"],
+  "required": ["schemaVersion", "id", "version", "titleKey", "canvas", "budget", "assets", "layers", "objects"],
   "properties": {
     "$schema": { "type": "string" },
 
@@ -27,6 +27,17 @@
       "type": "string",
       "pattern": "^scene\\.[a-z0-9_]+\\.title$",
       "description": "Localization key, resolved against content/i18n. Never put literal text here."
+    },
+
+    "canvas": {
+      "type": "object",
+      "description": "Design resolution every coordinate in this file is expressed in. Origin is top-left, y grows downward — the convention art tools use. The runtime maps it to world space; scene authors never think in world units.",
+      "required": ["width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "width": { "type": "number", "minimum": 320, "maximum": 8192 },
+        "height": { "type": "number", "minimum": 320, "maximum": 8192 }
+      }
     },
 
     "budget": {

@@ -42,7 +42,15 @@ npm test
 
 `validate` covers scene manifests and localization catalogs. `test` runs both the
 gate tests and the game core tests (`npm run test:gates` / `npm run test:core` to
-run one side alone).
+run one side alone) and takes seconds.
+
+```bash
+npm run test:unity
+```
+
+Runs the Unity EditMode tests headlessly. Kept out of `npm test` because it needs a
+licensed Unity install and takes minutes — run it before pushing anything under
+`unity/`.
 
 ---
 
@@ -70,6 +78,25 @@ without Unity. One set of sources, two build paths, no copies.
 **Where the line sits:** anything that needs a transform, a sprite, a touch event or
 a sound goes in the Unity layer. Anything that can be decided from numbers and ids
 goes here.
+
+## How content reaches the game
+
+```
+content/scenes/<id>/manifest.json      authored by hand, validated by npm run validate
+  → Ustaca Eller → Sync content        copied into StreamingAssets
+  → SceneCatalog                       read with Newtonsoft into SceneManifest
+  → SceneBuilder                       GameObjects, positions, layer order
+```
+
+`content/` sits at the repository root rather than under `Assets/` so a scene author
+edits JSON, runs the validator and never opens Unity. The sync step is the seam, and
+it becomes an Addressables build once scenes ship as downloadable groups.
+
+Art does not exist yet, so `SceneBuilder` renders every object as a flat coloured
+quad — a greybox. Layout, layer order, drop zones and all four mechanics can be
+exercised and measured now; the illustrator's work drops into the same slots later
+without the runtime changing. Placeholder colours are derived from the object id, so
+a prop keeps its colour between builds and screenshots stay comparable.
 
 ---
 

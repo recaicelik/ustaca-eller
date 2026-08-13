@@ -47,6 +47,7 @@ function expectMentions(name, output, needles) {
     'expected "voice"',
   ]);
   expect('a dead accept rule is reported as a warning', output.includes('dead rule'));
+  expect('an object placed off-canvas is reported', output.includes('outside the 1920x1080 canvas'));
 }
 
 // -------------------------------------------------------------- i18n catalogs

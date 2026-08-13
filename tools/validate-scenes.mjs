@@ -234,6 +234,23 @@ function validateReferences(scene, errors, warnings) {
     }
   }
 
+  // Anything placed outside the design resolution is invisible on every device.
+  // A warning rather than an error: authors legitimately park props just off-screen
+  // while blocking out a scene.
+  const { width, height } = scene.canvas;
+  for (const object of scene.objects ?? []) {
+    const { x, y } = object.transform;
+    if (x < 0 || x > width || y < 0 || y > height) {
+      warnings.push(`objects."${object.id}": (${x}, ${y}) is outside the ${width}x${height} canvas`);
+    }
+  }
+  for (const zone of scene.zones ?? []) {
+    const { x, y, width: w, height: h } = zone.shape;
+    if (x < 0 || y < 0 || x + w > width || y + h > height) {
+      warnings.push(`zones."${zone.id}": extends past the ${width}x${height} canvas`);
+    }
+  }
+
   const spriteCount = (scene.objects ?? []).length;
   if (spriteCount > scene.budget.maxActiveSprites) {
     errors.push(`budget exceeded: ${spriteCount} objects, maxActiveSprites is ${scene.budget.maxActiveSprites}`);

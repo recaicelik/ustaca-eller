@@ -206,25 +206,57 @@ Bunlar tartışmaya açık değil; her biri ya yasal bir zorunluluk ya da geri d
 
 ## Şu Anki Durum
 
+*13 Ağustos 2026 · commit `762e533`*
+
 | Faz | Durum |
 |---|---|
-| Faz 0 | Araçlar kuruldu; **Unity lisans aktivasyonu ve referans cihaz bekliyor** |
-| Faz 1 | İçerik hattı ve CI kapıları tamam; sahne çalıştırıcının motordan bağımsız yarısı yazıldı |
-| Faz 2 | Dört mekaniğin karar mantığı yazıldı ve test edildi; görsel katman Unity'yi bekliyor |
-| Faz 3-5 | Bekliyor |
+| **Faz 0** | **Açık.** Araçlar ve zincir hazır, ama iki çıkış kriterinin ikisi de karşılanmadı |
+| Faz 1 | Büyük ölçüde tamam — kayıt sistemi ve ses yöneticisi eksik |
+| Faz 2 | Karar mantığı yazıldı ve test edildi; **dokunma girdisi yok**, yani hiçbir mekanik oynanabilir değil |
+| Faz 3 | Başlanmadı — kabuk klasörlerinde henüz kod yok |
+| Faz 4 | Plan dışı erken başladı: Mutfak sahnesi çizildi. Ses, seslendirme ve animasyon yok |
+| Faz 5 | Başlanmadı |
 
-**Kurulanlar:** Node araç zinciri, `git-lfs` (depoda etkin), .NET 10 SDK, Unity Hub, Unity 6 LTS (6000.0.81f1, iOS + Android modülleriyle).
+### Kurulu ve çalışır durumda
 
-**Tamamlananlar:**
+Node araç zinciri · `git-lfs` (depoda etkin) · .NET 10 SDK · Unity Hub · Unity 6 LTS 6000.0.81f1 (iOS + Android modülleri) · Xcode 26.6 + iOS 26.5 simülatör platformu · `librsvg` (çizim hattı) · uçtan uca iOS simülatör derleme zinciri (`npm run run:ios`)
 
-- Sahne manifest şeması, sahne doğrulayıcı, yerelleştirme katalogları ve doğrulayıcısı, Kids/COPPA uyumluluk kapısı ve bu kapıların testleri
-- Dört mekaniği birden kullanan örnek Mutfak sahnesi
-- **Oyun çekirdeği** (`core/UstacaEller.Core`) — motordan bağımsız saf C#: kesme geometrisi, yapışma çözümü, ızgara yerleştirme, yerelleştirme çözümü. 36 birim testi.
-- Toplam 49 otomatik test, tek komutta: `npm test`
+### Tamamlananlar
 
-**Sıradaki engel — insan kararı gerekiyor:**
+- **İçerik hattı:** manifest şeması, sahne doğrulayıcı, yerelleştirme katalogları ve doğrulayıcısı, Kids/COPPA uyumluluk kapısı, kapıların kendi testleri, CI
+- **Oyun çekirdeği** (`core/UstacaEller.Core`): kesme geometrisi, ardışık kesim yönetimi, yapışma çözümü, ızgara yerleştirme, yerelleştirme çözümü — motordan bağımsız, 54 birim testi
+- **Sahne çalıştırıcı:** manifest → GameObject, kamera oturtma, letterbox
+- **Sanat hattı:** vektör kaynaktan sprite üretimi; Mutfak sahnesi çizildi (17 sprite + karakter)
+- **82 otomatik test** (54 çekirdek + 14 kapı + 14 Unity), üçü de yeşil
 
-1. **Unity lisans aktivasyonu.** Editor kuruldu ama açılması için Unity hesabıyla giriş gerekiyor; kimlik bilgisi gerektirdiği için bu adım sende. Personal lisans, yıllık gelir + yatırım 200.000 $ altındayken yeterli.
-2. **Referans cihaz alımı** — giriş segmenti Android. Performans kabul kriterinin ölçüldüğü tek yer; olmadan Faz 0 kapanamaz.
-3. **IP kararı** — rakip analizinin önerdiği üç yoldan hangisi: TRT ile lisans görüşmesi, bağımsız bir yerli karakter lisansı, ya da sıfırdan özgün karakter evreni. Karakter tasarımı Faz 4'ün girdisi olduğu için bu kararın Faz 2 bitmeden verilmesi gerekiyor.
-4. **İllüstratör/animatör işe alımı.** Bu kategoride ürünü kazandıran şey üretim kalitesi; kod bu darboğazı açamaz.
+### Faz 0'ı kapatmak için eksikler
+
+Çıkış kriteri iki maddeydi; ikisi de açık.
+
+**1 — Referans cihazda performans ölçümü**
+
+| Eksik | Kim yapar |
+|---|---|
+| Giriş segmenti Android cihaz | **Sen** — satın alma |
+| Ölçüm sahnesi: 180 sprite + 4 iskelet, kesme aktif | Ben |
+| Kare süresi ölçüm koşumu ve raporu | Ben |
+
+> İskelet (Rive/Spine) henüz projede yok. Ölçümün sprite kısmı cihaz gelir gelmez yapılabilir; iskelet kısmı animasyon hattı kurulana kadar bekler. Kriterin bu yarısını ayırmak gerekebilir.
+
+**2 — Kids kategorisi beyanıyla TestFlight'a çıkmış bir build**
+
+| Eksik | Kim yapar |
+|---|---|
+| Apple Developer Program üyeliği (99 $/yıl) | **Sen** — kimlik ve ödeme gerektiriyor |
+| İmzalama sertifikası ve provisioning profili | **Sen** açtıktan sonra ben |
+| RevenueCat hesabı | **Sen** |
+| RevenueCat Unity SDK entegrasyonu | Ben |
+| App Store Connect kaydı, "Made for Kids", yaş bandı 5 ve altı | **Sen** açtıktan sonra ben |
+| Gizlilik politikası metni ve URL'si (çocuk uygulamalarında zorunlu) | Ben yazarım, yayınlaması sende |
+| Ebeveyn kapısı ve ödeme duvarı ekranları | Ben |
+
+### Sıradaki kararlar
+
+1. **IP kararı.** Şu an sahnede sıfırdan çizdiğim özgün bir karakter var — rakip analizinin "lisans sürtünmesi taşımayan" üçüncü yolu. Bunu kalıcı seçim yapıyor muyuz, yoksa TRT veya bağımsız bir yerli karakterle görüşecek miyiz? Faz 2 bitmeden netleşmeli.
+2. **İllüstratör.** Mevcut çizimler benim elimden çıktı ve tutarlı, ama bu kategoride ürünü kazandıran üretim kalitesi için profesyonel bir illüstratör gerekiyor.
+3. **Ses tasarımcısı ve Türkçe seslendirme** — Faz 2 sonrası.

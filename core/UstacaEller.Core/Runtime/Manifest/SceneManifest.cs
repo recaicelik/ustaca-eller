@@ -134,6 +134,12 @@ namespace UstacaEller.Core.Manifest
 
         public ObjectTransform Transform { get; set; }
 
+        /// <summary>
+        /// Blockout aid, in canvas pixels. Real sprites define their own size; this only
+        /// exists so a scene can be laid out and reviewed before the atlas does.
+        /// </summary>
+        public PlaceholderSize PlaceholderSize { get; set; }
+
         /// <summary>Voice clip spoken when the child taps this object.</summary>
         public string LabelVoice { get; set; }
 
@@ -168,6 +174,13 @@ namespace UstacaEller.Core.Manifest
         public const string Paint = "paint";
         public const string Cut = "cut";
         public const string Build = "build";
+    }
+
+    public sealed class PlaceholderSize
+    {
+        public float Width { get; set; }
+
+        public float Height { get; set; }
     }
 
     public sealed class ObjectTransform

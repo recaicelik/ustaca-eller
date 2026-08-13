@@ -4,232 +4,547 @@
   "id": "kitchen",
   "version": "0.1.0",
   "titleKey": "scene.kitchen.title",
-
-  "canvas": { "width": 1920, "height": 1080 },
-
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
   "budget": {
     "maxActiveSprites": 120,
     "maxSkeletons": 3,
     "targetFrameMs": 16.7
   },
-
   "assets": {
     "atlases": [
       {
         "id": "atlas_kitchen",
         "file": "atlas_kitchen.png",
         "sprites": [
-          "counter", "oven", "shelf", "tray", "window",
-          "dough_a", "dough_b",
-          "cookie_star", "cookie_heart", "cookie_moon",
+          "counter",
+          "oven",
+          "shelf",
+          "tray",
+          "window",
+          "dough_a",
+          "dough_b",
+          "cookie_star",
+          "cookie_heart",
+          "cookie_moon",
           "cake_plain",
-          "jar_flour", "jar_sugar", "jar_salt", "jar_cocoa"
+          "jar_flour",
+          "jar_sugar",
+          "jar_salt",
+          "jar_cocoa"
         ]
       }
     ],
     "skeletons": [
-      { "id": "characters", "file": "characters.riv", "type": "rive" }
+      {
+        "id": "characters",
+        "file": "characters.riv",
+        "type": "rive"
+      }
     ],
     "audio": [
-      { "id": "amb_kitchen", "file": "amb_kitchen.ogg", "type": "ambience" },
-      { "id": "sfx_cut", "file": "sfx_cut.ogg", "type": "sfx" },
-      { "id": "sfx_snap", "file": "sfx_snap.ogg", "type": "sfx" },
-      { "id": "sfx_brush", "file": "sfx_brush.ogg", "type": "sfx" },
-      { "id": "sfx_fill", "file": "sfx_fill.ogg", "type": "sfx" },
-      { "id": "sfx_settle", "file": "sfx_settle.ogg", "type": "sfx" },
-
-      { "id": "vo_dough", "file": "vo_dough.ogg", "type": "voice" },
-      { "id": "vo_cookie", "file": "vo_cookie.ogg", "type": "voice" },
-      { "id": "vo_cake", "file": "vo_cake.ogg", "type": "voice" },
-      { "id": "vo_jar", "file": "vo_jar.ogg", "type": "voice" },
-      { "id": "vo_welcome", "file": "vo_welcome.ogg", "type": "voice" },
-      { "id": "vo_well_done", "file": "vo_well_done.ogg", "type": "voice" }
+      {
+        "id": "amb_kitchen",
+        "file": "amb_kitchen.ogg",
+        "type": "ambience"
+      },
+      {
+        "id": "sfx_cut",
+        "file": "sfx_cut.ogg",
+        "type": "sfx"
+      },
+      {
+        "id": "sfx_snap",
+        "file": "sfx_snap.ogg",
+        "type": "sfx"
+      },
+      {
+        "id": "sfx_brush",
+        "file": "sfx_brush.ogg",
+        "type": "sfx"
+      },
+      {
+        "id": "sfx_fill",
+        "file": "sfx_fill.ogg",
+        "type": "sfx"
+      },
+      {
+        "id": "sfx_settle",
+        "file": "sfx_settle.ogg",
+        "type": "sfx"
+      },
+      {
+        "id": "vo_dough",
+        "file": "vo_dough.ogg",
+        "type": "voice"
+      },
+      {
+        "id": "vo_cookie",
+        "file": "vo_cookie.ogg",
+        "type": "voice"
+      },
+      {
+        "id": "vo_cake",
+        "file": "vo_cake.ogg",
+        "type": "voice"
+      },
+      {
+        "id": "vo_jar",
+        "file": "vo_jar.ogg",
+        "type": "voice"
+      },
+      {
+        "id": "vo_welcome",
+        "file": "vo_welcome.ogg",
+        "type": "voice"
+      },
+      {
+        "id": "vo_well_done",
+        "file": "vo_well_done.ogg",
+        "type": "voice"
+      }
     ]
   },
-
   "layers": [
-    { "id": "background", "order": 0, "parallax": 0 },
-    { "id": "furniture", "order": 10, "parallax": 0 },
-    { "id": "props", "order": 20, "parallax": 0 },
-    { "id": "foreground", "order": 30, "parallax": 0 }
+    {
+      "id": "background",
+      "order": 0,
+      "parallax": 0
+    },
+    {
+      "id": "furniture",
+      "order": 10,
+      "parallax": 0
+    },
+    {
+      "id": "props",
+      "order": 20,
+      "parallax": 0
+    },
+    {
+      "id": "foreground",
+      "order": 30,
+      "parallax": 0
+    }
   ],
-
   "zones": [
     {
       "id": "counter_area",
       "type": "snap",
-      "shape": { "x": 340, "y": 620, "width": 620, "height": 220 },
-      "accepts": ["dough_*"],
+      "shape": {
+        "x": 340,
+        "y": 620,
+        "width": 620,
+        "height": 220
+      },
+      "accepts": [
+        "dough_*"
+      ],
       "snapRadius": 90
     },
     {
       "id": "tray_area",
       "type": "snap",
-      "shape": { "x": 1100, "y": 640, "width": 420, "height": 200 },
-      "accepts": ["cookie_*"],
+      "shape": {
+        "x": 1100,
+        "y": 640,
+        "width": 420,
+        "height": 200
+      },
+      "accepts": [
+        "cookie_*"
+      ],
       "snapRadius": 70
     },
     {
       "id": "shelf_grid",
       "type": "grid",
-      "shape": { "x": 1180, "y": 180, "width": 560, "height": 260 },
-      "accepts": ["jar_*"],
-      "grid": { "columns": 4, "rows": 2 },
+      "shape": {
+        "x": 1180,
+        "y": 150,
+        "width": 560,
+        "height": 260
+      },
+      "accepts": [
+        "jar_*"
+      ],
+      "grid": {
+        "columns": 4,
+        "rows": 2
+      },
       "snapRadius": 80
     },
     {
       "id": "cake_area",
       "type": "paintArea",
-      "shape": { "x": 640, "y": 300, "width": 340, "height": 300 }
+      "shape": {
+        "x": 640,
+        "y": 300,
+        "width": 340,
+        "height": 300
+      }
     }
   ],
-
   "objects": [
     {
       "id": "counter",
       "layer": "furniture",
       "sprite": "atlas_kitchen:counter",
-      "transform": { "x": 640, "y": 760 }
+      "transform": {
+        "x": 640,
+        "y": 760
+      },
+      "placeholderSize": {
+        "width": 640,
+        "height": 190
+      }
     },
     {
       "id": "oven",
       "layer": "furniture",
       "sprite": "atlas_kitchen:oven",
-      "transform": { "x": 240, "y": 700 }
+      "transform": {
+        "x": 240,
+        "y": 700
+      },
+      "placeholderSize": {
+        "width": 220,
+        "height": 300
+      }
     },
     {
       "id": "shelf",
       "layer": "furniture",
       "sprite": "atlas_kitchen:shelf",
-      "transform": { "x": 1460, "y": 300 }
+      "transform": {
+        "x": 1460,
+        "y": 300
+      },
+      "placeholderSize": {
+        "width": 600,
+        "height": 50
+      }
+    },
+    {
+      "id": "shelf_lower",
+      "layer": "furniture",
+      "sprite": "atlas_kitchen:shelf",
+      "transform": {
+        "x": 1460,
+        "y": 430
+      },
+      "placeholderSize": {
+        "width": 600,
+        "height": 50
+      }
     },
     {
       "id": "window",
       "layer": "background",
       "sprite": "atlas_kitchen:window",
-      "transform": { "x": 980, "y": 220 }
+      "transform": {
+        "x": 980,
+        "y": 220
+      },
+      "placeholderSize": {
+        "width": 320,
+        "height": 240
+      }
     },
     {
       "id": "tray",
       "layer": "furniture",
       "sprite": "atlas_kitchen:tray",
-      "transform": { "x": 1310, "y": 740 }
+      "transform": {
+        "x": 1310,
+        "y": 740
+      },
+      "placeholderSize": {
+        "width": 430,
+        "height": 45
+      }
     },
-
     {
       "id": "dough_a",
       "layer": "props",
       "sprite": "atlas_kitchen:dough_a",
-      "transform": { "x": 520, "y": 660 },
+      "transform": {
+        "x": 520,
+        "y": 660
+      },
+      "placeholderSize": {
+        "width": 150,
+        "height": 110
+      },
       "labelVoice": "vo_dough",
-      "mechanics": ["cut", "glue"],
-      "cut": { "minPieceArea": 0.08, "maxPieces": 6, "cutSfx": "sfx_cut" },
-      "glue": { "acceptedBy": ["counter_area"], "snapSfx": "sfx_snap", "returnOnMiss": true }
+      "mechanics": [
+        "cut",
+        "glue"
+      ],
+      "cut": {
+        "minPieceArea": 0.08,
+        "maxPieces": 6,
+        "cutSfx": "sfx_cut"
+      },
+      "glue": {
+        "acceptedBy": [
+          "counter_area"
+        ],
+        "snapSfx": "sfx_snap",
+        "returnOnMiss": true
+      }
     },
     {
       "id": "dough_b",
       "layer": "props",
       "sprite": "atlas_kitchen:dough_b",
-      "transform": { "x": 760, "y": 660 },
+      "transform": {
+        "x": 760,
+        "y": 660
+      },
+      "placeholderSize": {
+        "width": 150,
+        "height": 110
+      },
       "labelVoice": "vo_dough",
-      "mechanics": ["cut", "glue"],
-      "cut": { "minPieceArea": 0.08, "maxPieces": 6, "cutSfx": "sfx_cut" },
-      "glue": { "acceptedBy": ["counter_area"], "snapSfx": "sfx_snap", "returnOnMiss": true }
+      "mechanics": [
+        "cut",
+        "glue"
+      ],
+      "cut": {
+        "minPieceArea": 0.08,
+        "maxPieces": 6,
+        "cutSfx": "sfx_cut"
+      },
+      "glue": {
+        "acceptedBy": [
+          "counter_area"
+        ],
+        "snapSfx": "sfx_snap",
+        "returnOnMiss": true
+      }
     },
-
     {
       "id": "cookie_star",
       "layer": "props",
       "sprite": "atlas_kitchen:cookie_star",
-      "transform": { "x": 1020, "y": 860 },
+      "transform": {
+        "x": 1020,
+        "y": 860
+      },
+      "placeholderSize": {
+        "width": 95,
+        "height": 95
+      },
       "labelVoice": "vo_cookie",
-      "mechanics": ["glue"],
-      "glue": { "acceptedBy": ["tray_area"], "snapSfx": "sfx_snap", "returnOnMiss": true }
+      "mechanics": [
+        "glue"
+      ],
+      "glue": {
+        "acceptedBy": [
+          "tray_area"
+        ],
+        "snapSfx": "sfx_snap",
+        "returnOnMiss": true
+      }
     },
     {
       "id": "cookie_heart",
       "layer": "props",
       "sprite": "atlas_kitchen:cookie_heart",
-      "transform": { "x": 1120, "y": 880 },
+      "transform": {
+        "x": 1120,
+        "y": 880
+      },
+      "placeholderSize": {
+        "width": 95,
+        "height": 95
+      },
       "labelVoice": "vo_cookie",
-      "mechanics": ["glue"],
-      "glue": { "acceptedBy": ["tray_area"], "snapSfx": "sfx_snap", "returnOnMiss": true }
+      "mechanics": [
+        "glue"
+      ],
+      "glue": {
+        "acceptedBy": [
+          "tray_area"
+        ],
+        "snapSfx": "sfx_snap",
+        "returnOnMiss": true
+      }
     },
     {
       "id": "cookie_moon",
       "layer": "props",
       "sprite": "atlas_kitchen:cookie_moon",
-      "transform": { "x": 1220, "y": 900 },
+      "transform": {
+        "x": 1220,
+        "y": 900
+      },
+      "placeholderSize": {
+        "width": 95,
+        "height": 95
+      },
       "labelVoice": "vo_cookie",
-      "mechanics": ["glue"],
-      "glue": { "acceptedBy": ["tray_area"], "snapSfx": "sfx_snap", "returnOnMiss": true }
+      "mechanics": [
+        "glue"
+      ],
+      "glue": {
+        "acceptedBy": [
+          "tray_area"
+        ],
+        "snapSfx": "sfx_snap",
+        "returnOnMiss": true
+      }
     },
-
     {
       "id": "cake",
       "layer": "props",
       "sprite": "atlas_kitchen:cake_plain",
-      "transform": { "x": 810, "y": 450 },
+      "transform": {
+        "x": 810,
+        "y": 450
+      },
+      "placeholderSize": {
+        "width": 220,
+        "height": 200
+      },
       "labelVoice": "vo_cake",
-      "mechanics": ["paint"],
-      "paint": { "maskFile": "cake_mask.png", "brushSfx": "sfx_brush", "fillSfx": "sfx_fill" }
+      "mechanics": [
+        "paint"
+      ],
+      "paint": {
+        "maskFile": "cake_mask.png",
+        "brushSfx": "sfx_brush",
+        "fillSfx": "sfx_fill"
+      }
     },
-
     {
       "id": "jar_flour",
       "layer": "props",
       "sprite": "atlas_kitchen:jar_flour",
-      "transform": { "x": 380, "y": 420 },
+      "transform": {
+        "x": 380,
+        "y": 420
+      },
+      "placeholderSize": {
+        "width": 85,
+        "height": 120
+      },
       "labelVoice": "vo_jar",
-      "mechanics": ["build"],
-      "build": { "gridZone": "shelf_grid", "settleSfx": "sfx_settle" }
+      "mechanics": [
+        "build"
+      ],
+      "build": {
+        "gridZone": "shelf_grid",
+        "settleSfx": "sfx_settle"
+      }
     },
     {
       "id": "jar_sugar",
       "layer": "props",
       "sprite": "atlas_kitchen:jar_sugar",
-      "transform": { "x": 470, "y": 420 },
+      "transform": {
+        "x": 470,
+        "y": 420
+      },
+      "placeholderSize": {
+        "width": 85,
+        "height": 120
+      },
       "labelVoice": "vo_jar",
-      "mechanics": ["build"],
-      "build": { "gridZone": "shelf_grid", "settleSfx": "sfx_settle" }
+      "mechanics": [
+        "build"
+      ],
+      "build": {
+        "gridZone": "shelf_grid",
+        "settleSfx": "sfx_settle"
+      }
     },
     {
       "id": "jar_salt",
       "layer": "props",
       "sprite": "atlas_kitchen:jar_salt",
-      "transform": { "x": 560, "y": 420 },
+      "transform": {
+        "x": 560,
+        "y": 420
+      },
+      "placeholderSize": {
+        "width": 85,
+        "height": 120
+      },
       "labelVoice": "vo_jar",
-      "mechanics": ["build"],
-      "build": { "gridZone": "shelf_grid", "settleSfx": "sfx_settle" }
+      "mechanics": [
+        "build"
+      ],
+      "build": {
+        "gridZone": "shelf_grid",
+        "settleSfx": "sfx_settle"
+      }
     },
     {
       "id": "jar_cocoa",
       "layer": "props",
       "sprite": "atlas_kitchen:jar_cocoa",
-      "transform": { "x": 650, "y": 420 },
+      "transform": {
+        "x": 650,
+        "y": 420
+      },
+      "placeholderSize": {
+        "width": 85,
+        "height": 120
+      },
       "labelVoice": "vo_jar",
-      "mechanics": ["build"],
-      "build": { "gridZone": "shelf_grid", "settleSfx": "sfx_settle" }
+      "mechanics": [
+        "build"
+      ],
+      "build": {
+        "gridZone": "shelf_grid",
+        "settleSfx": "sfx_settle"
+      }
     }
   ],
-
   "characters": [
     {
       "id": "maker",
       "skeleton": "characters",
       "artboard": "Maker",
       "stateMachine": "Reactions",
-      "transform": { "x": 300, "y": 520, "scale": 1 },
+      "transform": {
+        "x": 200,
+        "y": 940,
+        "scale": 1
+      },
       "reactions": [
-        { "on": "sceneEnter", "input": "greet", "voice": "vo_welcome" },
-        { "on": "objectCut", "target": "dough_*", "input": "surprised" },
-        { "on": "objectSnapped", "target": "cookie_*", "input": "cheer", "voice": "vo_well_done" },
-        { "on": "objectPainted", "target": "cake", "input": "applaud" },
-        { "on": "idleTimeout", "input": "yawn" }
+        {
+          "on": "sceneEnter",
+          "input": "greet",
+          "voice": "vo_welcome"
+        },
+        {
+          "on": "objectCut",
+          "target": "dough_*",
+          "input": "surprised"
+        },
+        {
+          "on": "objectSnapped",
+          "target": "cookie_*",
+          "input": "cheer",
+          "voice": "vo_well_done"
+        },
+        {
+          "on": "objectPainted",
+          "target": "cake",
+          "input": "applaud"
+        },
+        {
+          "on": "idleTimeout",
+          "input": "yawn"
+        }
       ]
     }
   ],
-
   "audio": {
     "ambience": "amb_kitchen",
     "ambienceVolume": 0.35

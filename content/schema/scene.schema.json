@@ -147,6 +147,16 @@
               "scale": { "type": "number", "minimum": 0.05, "maximum": 10 }
             }
           },
+          "placeholderSize": {
+            "type": "object",
+            "description": "Blockout aid only. Until the atlas exists there is nothing to derive a size from, and a scene where a counter and a biscuit are the same square cannot be reviewed. Once real sprites land the sprite defines the size and this is ignored.",
+            "required": ["width", "height"],
+            "additionalProperties": false,
+            "properties": {
+              "width": { "type": "number", "minimum": 1 },
+              "height": { "type": "number", "minimum": 1 }
+            }
+          },
           "labelVoice": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*$",

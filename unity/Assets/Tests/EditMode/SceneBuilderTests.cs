@@ -53,19 +53,35 @@ namespace UstacaEller.Tests.EditMode
 
             Assert.AreEqual("kitchen", manifest.Id);
             Assert.AreEqual("scene.kitchen.title", manifest.TitleKey);
-            Assert.AreEqual(15, manifest.Objects.Count);
             Assert.AreEqual(1920f, manifest.Canvas.Width);
             Assert.AreEqual(0.08f, manifest.Objects.Single(o => o.Id == "dough_a").Cut.MinPieceArea, 0.0001f);
+            Assert.AreEqual(150f, manifest.Objects.Single(o => o.Id == "dough_a").PlaceholderSize.Width, 0.0001f);
         }
 
         [Test]
         public void EveryObjectZoneAndCharacterBecomesAGameObject()
         {
-            Assert.AreEqual(15, _built.Objects.Count);
-            Assert.AreEqual(4, _built.Zones.Count);
-            Assert.AreEqual(1, _built.Characters.Count);
+            // Counts come from the manifest rather than a literal: the invariant is that
+            // nothing is dropped on the way in, not that the kitchen has sixteen props.
+            SceneManifest manifest = _built.Manifest;
+
+            Assert.AreEqual(manifest.Objects.Count, _built.Objects.Count);
+            Assert.AreEqual(manifest.Zones.Count, _built.Zones.Count);
+            Assert.AreEqual(manifest.Characters.Count, _built.Characters.Count);
             Assert.IsTrue(_built.Objects.ContainsKey("dough_a"));
             Assert.IsTrue(_built.Zones.ContainsKey("shelf_grid"));
+        }
+
+        [Test]
+        public void PlaceholderSizesReachTheRenderer()
+        {
+            // Without this every prop is the same square and the blockout cannot be
+            // reviewed — a counter and a biscuit look identical.
+            Vector3 counter = _built.Objects["counter"].transform.localScale;
+            Vector3 cookie = _built.Objects["cookie_star"].transform.localScale;
+
+            Assert.Greater(counter.x, cookie.x);
+            Assert.AreNotEqual(counter.x, counter.y);
         }
 
         [Test]

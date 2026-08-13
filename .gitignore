@@ -53,6 +53,10 @@ unity/.vscode/
 unity/Assets/StreamingAssets/content/
 unity/Assets/StreamingAssets/content.meta
 
+# Regenerated on demand by "Ustaca Eller → Render greybox screenshot".
+# Not worth carrying in LFS when any checkout can produce it.
+screenshots/
+
 # --- Tooling ---
 node_modules/
 .DS_Store

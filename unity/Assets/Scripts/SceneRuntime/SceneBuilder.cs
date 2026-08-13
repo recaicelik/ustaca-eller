@@ -33,10 +33,17 @@ namespace UstacaEller.SceneRuntime
     /// </summary>
     public sealed class SceneBuilder
     {
-        /// <summary>Placeholder edge length in canvas pixels, until sprites carry real sizes.</summary>
-        public const float PlaceholderSize = 120f;
+        /// <summary>Fallback edge length in canvas pixels when a manifest states no placeholder size.</summary>
+        public const float DefaultPlaceholderSize = 120f;
 
         private static Sprite _placeholderSprite;
+
+        /// <summary>
+        /// Draws drop zones as translucent overlays. Off in a real build — this is for
+        /// blockout screenshots, where an invisible zone is exactly the mistake you are
+        /// trying to catch.
+        /// </summary>
+        public bool ShowZones { get; set; }
 
         public BuiltScene Build(SceneManifest manifest, Transform parent = null)
         {
@@ -54,7 +61,7 @@ namespace UstacaEller.SceneRuntime
 
             foreach (SceneZone zone in manifest.Zones)
             {
-                built.Zones[zone.Id] = BuildZone(zone, built);
+                built.Zones[zone.Id] = BuildZone(zone, built, ShowZones);
             }
 
             foreach (SceneObject sceneObject in manifest.Objects)
@@ -78,8 +85,12 @@ namespace UstacaEller.SceneRuntime
             go.transform.localPosition = built.Mapper.ToWorld(sceneObject.Transform);
             go.transform.localRotation = Quaternion.Euler(0f, 0f, -sceneObject.Transform.Rotation);
 
-            float size = built.Mapper.ToWorldLength(PlaceholderSize) * sceneObject.Transform.Scale;
-            go.transform.localScale = new Vector3(size, size, 1f);
+            float width = sceneObject.PlaceholderSize?.Width ?? DefaultPlaceholderSize;
+            float height = sceneObject.PlaceholderSize?.Height ?? DefaultPlaceholderSize;
+            go.transform.localScale = new Vector3(
+                built.Mapper.ToWorldLength(width) * sceneObject.Transform.Scale,
+                built.Mapper.ToWorldLength(height) * sceneObject.Transform.Scale,
+                1f);
 
             SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
             renderer.sprite = PlaceholderSprite();
@@ -89,7 +100,7 @@ namespace UstacaEller.SceneRuntime
             return go;
         }
 
-        private static GameObject BuildZone(SceneZone zone, BuiltScene built)
+        private static GameObject BuildZone(SceneZone zone, BuiltScene built, bool visible)
         {
             var go = new GameObject($"zone:{zone.Id}");
             go.transform.SetParent(built.Root.transform, worldPositionStays: false);
@@ -105,8 +116,24 @@ namespace UstacaEller.SceneRuntime
                 built.Mapper.ToWorldLength(shape.Height),
                 1f);
 
+            if (!visible) return go;
+
+            SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
+            renderer.sprite = PlaceholderSprite();
+            renderer.color = ZoneColour(zone.Type);
+            renderer.sortingOrder = 90;
+
             return go;
         }
+
+        /// <summary>One colour per zone kind, so a blockout screenshot reads at a glance.</summary>
+        private static Color ZoneColour(string zoneType) => zoneType switch
+        {
+            ZoneKind.Snap => new Color(0.2f, 0.6f, 1f, 0.22f),
+            ZoneKind.Grid => new Color(1f, 0.75f, 0.1f, 0.22f),
+            ZoneKind.PaintArea => new Color(0.2f, 0.85f, 0.4f, 0.22f),
+            _ => new Color(0.5f, 0.5f, 0.5f, 0.22f),
+        };
 
         private static GameObject BuildCharacter(SceneCharacter character, BuiltScene built)
         {
@@ -116,7 +143,7 @@ namespace UstacaEller.SceneRuntime
 
             // Rive and Spine both arrive later; the placeholder marks the anchor so the
             // scene reads correctly in the meantime.
-            float size = built.Mapper.ToWorldLength(PlaceholderSize * 1.5f) * character.Transform.Scale;
+            float size = built.Mapper.ToWorldLength(DefaultPlaceholderSize * 1.5f) * character.Transform.Scale;
             go.transform.localScale = new Vector3(size, size, 1f);
 
             SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();

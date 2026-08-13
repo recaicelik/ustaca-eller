@@ -1,7 +1,10 @@
 {
   "name": "UstacaEller.Editor",
   "rootNamespace": "UstacaEller.Editor",
-  "references": [],
+  "references": [
+    "UstacaEller.Core",
+    "UstacaEller.SceneRuntime"
+  ],
   "includePlatforms": [
     "Editor"
   ],

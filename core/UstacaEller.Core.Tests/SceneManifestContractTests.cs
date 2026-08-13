@@ -103,9 +103,16 @@ namespace UstacaEller.Core.Tests
             Assert.Equal("kitchen", scene.Id);
             Assert.Equal("0.1.0", scene.Version);
             Assert.Equal(4, scene.Layers.Count);
-            Assert.Equal(15, scene.Objects.Count);
-            Assert.Equal(4, scene.Zones.Count);
             Assert.Single(scene.Characters);
+
+            // Object ids must be unique — the runtime and the save file both key on them.
+            Assert.Equal(scene.Objects.Count, scene.Objects.Select(o => o.Id).Distinct().Count());
+
+            // All four mechanics appear, so this scene keeps exercising the whole runtime.
+            foreach (string mechanic in new[] { Mechanic.Cut, Mechanic.Glue, Mechanic.Paint, Mechanic.Build })
+            {
+                Assert.Contains(scene.Objects, o => o.Has(mechanic));
+            }
         }
 
         [Fact]

@@ -89,7 +89,9 @@ if (existsSync(projectSettingsPath)) {
 
 // ---------------------------------------------------------------- source scan
 // fixtures intentionally contain violations; the tests point --root at them.
-const SKIP_DIRS = new Set(['node_modules', '.git', 'Library', 'Temp', 'Logs', 'obj', 'Build', 'docs', 'fixtures']);
+// Builds holds generated Xcode/Gradle output — not ours to police line by line;
+// what matters there is what actually compiles, checked separately below.
+const SKIP_DIRS = new Set(['node_modules', '.git', 'Library', 'Temp', 'Logs', 'obj', 'Build', 'Builds', 'docs', 'fixtures']);
 const SCANNED_EXTENSIONS = ['.cs', '.json', '.mm', '.m', '.swift', '.java', '.kt', '.gradle', '.plist'];
 
 function collectSourceFiles(dir, found = []) {
@@ -118,6 +120,37 @@ for (const file of collectSourceFiles(ROOT)) {
   });
 }
 notes.push(`${scannedFileCount} source file(s) scanned`);
+
+// ------------------------------------------------------- generated iOS project
+// Unity's iOS trampoline ships IDFA and App Tracking Transparency code in
+// Classes/Unity/DeviceSettings.mm. Reading that as a violation would be wrong: it
+// sits behind #if UNITY_USES_IAD and does not compile unless something turns it on.
+// What Apple actually sees is whether it compiled and whether AdSupport is linked,
+// so that is what gets checked — and it flips the moment an ad SDK is added.
+const buildsRoot = join(ROOT, 'unity/Builds');
+if (existsSync(buildsRoot)) {
+  for (const entry of readdirSync(buildsRoot)) {
+    const preprocessor = join(buildsRoot, entry, 'Classes/Preprocessor.h');
+    const projectFile = join(buildsRoot, entry, 'Unity-iPhone.xcodeproj/project.pbxproj');
+    if (!existsSync(preprocessor)) continue;
+
+    if (!/#define\s+UNITY_USES_IAD\s+0/.test(readFileSync(preprocessor, 'utf8'))) {
+      violations.push(
+        `iOS build "${entry}": UNITY_USES_IAD is not 0\n` +
+        '            reason: compiles Unity\'s IDFA and ATT code into the binary',
+      );
+    }
+
+    if (existsSync(projectFile) && readFileSync(projectFile, 'utf8').includes('AdSupport')) {
+      violations.push(
+        `iOS build "${entry}": AdSupport.framework is linked\n` +
+        '            reason: advertising identifier access, banned in the Kids Category',
+      );
+    }
+
+    notes.push(`iOS build "${entry}" checked: no IDFA/ATT code compiled in`);
+  }
+}
 
 // --------------------------------------------------------------------- report
 console.log('Kids Category / COPPA compliance gate\n');

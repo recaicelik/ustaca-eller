@@ -2,7 +2,8 @@
   "dependencies": {
     "com.ustacaeller.core": "file:../../core/UstacaEller.Core",
 
-    "com.unity.feature.2d": "2.0.1",
+    "com.unity.2d.sprite": "1.0.0",
+    "com.unity.2d.tilemap": "1.0.0",
     "com.unity.render-pipelines.universal": "17.0.3",
     "com.unity.ugui": "2.0.0",
     "com.unity.inputsystem": "1.11.2",

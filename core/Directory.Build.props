@@ -1,0 +1,17 @@
+<Project>
+
+  <!--
+    Keep .NET build output out of the package folder.
+
+    core/UstacaEller.Core is imported by Unity as a local package, and Unity imports
+    everything underneath it. A compiled UstacaEller.Core.dll sitting in bin/ would be
+    picked up as a plugin alongside the assembly Unity builds from the same sources
+    via the asmdef — two assemblies, one name. Building into core/.build/ keeps the
+    package folder to sources only, and the leading dot makes Unity ignore it anyway.
+  -->
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildThisFileDirectory).build/$(MSBuildProjectName)/bin/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory).build/$(MSBuildProjectName)/obj/</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+</Project>

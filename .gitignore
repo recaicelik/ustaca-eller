@@ -40,8 +40,14 @@ sysinfo.txt
 *.tmp.png
 
 # --- .NET (core/) ---
+# Build output lives outside the package folder so Unity never imports a compiled
+# copy of an assembly it also builds from source. See core/Directory.Build.props.
+core/.build/
 [Bb]in/
 [Oo]bj/
+
+# Unity regenerates these per machine
+unity/.vscode/
 
 # --- Tooling ---
 node_modules/
